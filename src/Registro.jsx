@@ -6,6 +6,9 @@ export function Registro() {
     const [socio, setSocio] = useState({ email: '', password: '', nombre: '', apellido: '' });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const URL = 'https://marinappback-production.up.railway.app';
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,7 +21,7 @@ export function Registro() {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/users/registro', {
+            const response = await fetch(`${URL}/users/registro`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

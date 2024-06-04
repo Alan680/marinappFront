@@ -5,8 +5,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Center, Box, Heading, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 
 export function DespachoNew() {
+    const URL = 'https://marinappback-production.up.railway.app';
     const navigate = useNavigate();
     const [error, setError] = useState('');
+    const token = sessionStorage.getItem('token');
     const [success, setSuccess] = useState('');
     const [despacho, setDespacho] = useState({
         nombreEmbarcacion: '',
@@ -44,9 +46,6 @@ export function DespachoNew() {
             fechaSalida === '' || 
             horaSalida === '' || 
             pasajerosABordo.length === 0 || 
-            // pasajeros.some(pasajero => pasajero.nombre === '' || pasajero.apellido === '') || 
-            // Funcion que transforme la lista de pasajeros a un string concatenado.
-            // ['Beto', 'Laucha'] -> 'Beto, Laucha'
             dniResponsable === '' || 
             numeroTelefono === '' || 
             fechaLlegada === '' || 
@@ -56,19 +55,20 @@ export function DespachoNew() {
             setError('Por favor, complete todos los campos.');
             return;
         }
-
+  
         try {
             const pasajerosString = despacho.pasajerosABordo.map(pasajero => `${pasajero.nombre} ${pasajero.apellido}`).join('-');
 
             despacho.pasajerosABordo = pasajerosString;
             console.log(despacho);
-            const response = await fetch('http://localhost:8080/despacho', {
+            const response = await fetch(`${URL}/despacho`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Envía el token en el encabezado de la solicitud
                 },
                 body: JSON.stringify(despacho),
-                credentials: 'include', // Envia cookies con la solicitud
+                credentials: 'include', // Envía cookies con la solicitud
             });
 
             const data = await response.json();

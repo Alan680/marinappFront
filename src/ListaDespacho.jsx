@@ -5,11 +5,13 @@ export function ListaDespachos() {
     const [despachos, setDespachos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const token = sessionStorage.getItem('token');
+    const URL = 'https://marinappback-production.up.railway.app';
 
     useEffect(() => {
         const fetchDespachos = async () => {
             try {
-                const response = await fetch('http://localhost:8080/despachos', {
+                const response = await fetch(`${URL}/despachos`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -29,7 +31,8 @@ export function ListaDespachos() {
             }
         };
         fetchDespachos();
-    }, []);
+    }, [URL]);
+  
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -54,12 +57,12 @@ export function ListaDespachos() {
                                 <Th>Hora de salida</Th>
                                 <Th>Fecha de llegada</Th>
                                 <Th>Hora de llegada</Th>
-                                <Th>Observaciones</Th>d
+                                <Th>Observaciones</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
-                        {despachos.map((despacho, index) => (
-                          <Tr key={index}>  
+                            {despachos.map((despacho, index) => (
+                                <Tr key={index}>
                                     <Td>{despacho.nombreEmbarcacion}</Td>
                                     <Td>{despacho.matriculaEmbarcacion}</Td>
                                     <Td>{despacho.fechaSalida}</Td>
